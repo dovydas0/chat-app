@@ -1,0 +1,2 @@
+- Implementing socket protocol for real-time communication between different clients through the application server
+- Storing signed up users in a database (non-structured / dictionary based - MongoDB)
