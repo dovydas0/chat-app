@@ -3,11 +3,10 @@ import { IoMdSend } from 'react-icons/io'
 import ChatMessages from './ChatMessages'
 import axios from 'axios'
 
-const ChatContent = ({ selectedRef, selected, loggedUser, handleProfileOpening, socket }) => {
+const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => {
     const [ receivedMess, setReceivedMess ] = useState('')
     const [ message, setMessage ] = useState('')
     const [ chatData, setChatData ] = useState('')
-
     const chatEl = useRef()
 
     useEffect(() => {
@@ -31,24 +30,19 @@ const ChatContent = ({ selectedRef, selected, loggedUser, handleProfileOpening, 
     }
     
     useEffect(() => {
-        console.log('useEffect running');
         if (socket.current) {
             socket.current.on('receive-msg', message => {
-                setReceivedMess(message)
-                // console.log(message);
-                // console.log(loggedUser._id);
-                console.log("selectedRef: ");
-                console.log(selectedRef);
-                console.log("selected: ");
-                console.log(selected);            
-                // console.log(message.receiverID);
-                // if (selected._id === message.senderID) {
-                //     console.log("RECEIVED");
-                // }
+                if (selected._id === message.senderID) {
+                    setReceivedMess(message)
+                }
             })
+
+            return () => {
+                socket.current.off('receive-msg')
+            }
         }        
         // chatEl.current?.scrollIntoView({ behavior: "smooth" })
-    }, [])
+    }, [selected, socket])
 
     useEffect(() => {
         receivedMess && setChatData(prev => [...prev, receivedMess])
@@ -56,8 +50,6 @@ const ChatContent = ({ selectedRef, selected, loggedUser, handleProfileOpening, 
 
     const handleSendMess = async (e) => {
         e.preventDefault()
-
-        console.log(selected);
 
         if (e.target[0].value == '') {
             return
@@ -107,7 +99,7 @@ const ChatContent = ({ selectedRef, selected, loggedUser, handleProfileOpening, 
                             <p className='flex text-sm items-center'>{selected.username}</p>
                         </div>
                     </div>
-                    <div ref={chatEl} className='chtEl min-w-full overflow-y-scroll flex flex-col py-2 pr-3'>
+                    <div ref={chatEl} className='chtEl my-2 min-w-full overflow-y-scroll flex flex-col py-2 pr-3'>
                         <ChatMessages chatData={chatData} loggedUser={loggedUser} />
                     </div>
                     <form onSubmit={e => handleSendMess(e)} className='flex bg-gray-200 rounded-md h-7 items-center'>

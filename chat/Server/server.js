@@ -124,9 +124,7 @@ const io = socket(server, {
     },
   });
 
-io.on('connect', socket => {    
-    console.log(socket.id + " connected");
-    
+io.on('connect', socket => {        
     socket.on('add-user', id => {
         console.log(socket.id + " user added");
         socketUsers.push({socketID: socket.id, userID: id})
@@ -139,14 +137,9 @@ io.on('connect', socket => {
 
     socket.on('send-msg', (data) => {
         const receivingSocket = socketUsers.filter(user => user.userID === data.receiverID)
-
         
         if (receivingSocket.length > 0) {
-            console.log("data: ");
-            console.log(data);
-
             socket.to(receivingSocket[0].socketID).emit('receive-msg', data)
-            console.log("sent");
         }
     })
 })

@@ -2,7 +2,7 @@ import { React, useState } from 'react'
 import UserProfile from './UserProfile'
 import ChatContent from './ChatContent'
 
-const Content = ({ selectedRef, selected, profileOpened, loggedUser, handleProfileOpening, socket }) => {
+const Content = ({ selected, profileOpened, loggedUser, handleProfileOpening, socket }) => {
     
     return(
         <div className='flex-initial basis-3/4 w-56 px-6 mt-5 pb-16 overflow-hidden'>
@@ -11,7 +11,7 @@ const Content = ({ selectedRef, selected, profileOpened, loggedUser, handleProfi
                 ?
                     <UserProfile loggedUser={loggedUser} />
                 :
-                    <ChatContent selectedRef={selectedRef} selected={selected} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
+                    <ChatContent selected={selected} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
             }
         </div>
             

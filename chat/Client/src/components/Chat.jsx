@@ -10,7 +10,6 @@ const Chat = ({ loggedUser }) => {
     const [ contacts, setContacts ] = useState([])
     const [ profileOpened, setProfileOpened ] = useState(false)
     let socket = useRef()
-    let selectedRef = useRef()
     
     useEffect(() => {
         socket.current = io('http://localhost:8000')
@@ -29,21 +28,19 @@ const Chat = ({ loggedUser }) => {
 
     const handleSelect = (user) => {
         setSelected(user)
-        selectedRef.current = user
         setProfileOpened(false)
     }
 
     const handleProfileOpening = () => {
         setProfileOpened(true)
         setSelected('')
-        selectedRef.current = ''
     }
 
     return(
         <div className="flex m-auto w-3/4 h-3/4 bg-gray-100 rounded-2xl">
             <MenuBar />
             <UserList handleSelect={handleSelect} selected={selected} contacts={contacts} />
-            <Content selectedRef={selectedRef.current} selected={selected} profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
+            <Content selected={selected} profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );
 }
