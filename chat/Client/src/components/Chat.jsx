@@ -8,6 +8,7 @@ import io from 'socket.io-client'
 const Chat = ({ loggedUser }) => {
     const [ selected, setSelected ] = useState('')
     const [ contacts, setContacts ] = useState([])
+    const [ friendAddition, setFriendAddition ] = useState(false)
     const [ profileOpened, setProfileOpened ] = useState(false)
     let socket = useRef()
     
@@ -22,13 +23,12 @@ const Chat = ({ loggedUser }) => {
             loggedUser
         })
         .then(res => {
-            // const users = res.data.users.filter(user => user._id !== loggedUser._id)
             if (res.data.status) {
                 setContacts(res.data.friends[0].friends)
             }
         })
         .catch(err => console.log(err))
-    }, [])
+    }, [friendAddition, socket])
 
     const handleSelect = (user) => {
         setSelected(user)
@@ -43,7 +43,7 @@ const Chat = ({ loggedUser }) => {
     return(
         <div className="flex m-auto w-3/4 h-3/4 bg-gray-100 rounded-2xl">
             <MenuBar />
-            <UserList handleSelect={handleSelect} selected={selected} contacts={contacts} loggedUser={loggedUser} />
+            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} handleSelect={handleSelect} selected={selected} contacts={contacts} loggedUser={loggedUser} />
             <Content selected={selected} profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );

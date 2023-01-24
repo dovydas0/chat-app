@@ -50,10 +50,10 @@ app.post("/api/all-friends", async (req, res) => {
     const { loggedUser } = req.body
 
     if (loggedUser) {
-        const friends = await Users.find(loggedUser).select([
+        const friends = await Users.find({ _id: loggedUser._id }).select([
             "friends"
         ])
-
+        
         return res.json({ status: true, friends })
     }
     

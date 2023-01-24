@@ -1,13 +1,13 @@
 import { React, useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 
-const AddFriendPrompt = ({ handleFriendPropmt, loggedUser }) => {
+const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
   const [ friendEntry, setFriendEntry ] = useState('')
   const [ allUsers, setAllUsers ] = useState([])
 
   const handleBgClick = (e) => {
     if (e.target === e.currentTarget) {
-      handleFriendPropmt()
+      handleFriendPrompt()
     }
   }
 
@@ -19,10 +19,10 @@ const AddFriendPrompt = ({ handleFriendPropmt, loggedUser }) => {
       })
       .then(res => {
         if (res.data.status) {
-          handleFriendPropmt()
+          handleFriendPrompt()          
         } else {
           console.log(res.data.status);
-          handleFriendPropmt()
+          handleFriendPrompt()
         }
       })
       .catch(err => {console.log(err)})
