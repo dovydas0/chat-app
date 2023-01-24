@@ -7,6 +7,9 @@ const usersSchema = new mongoose.Schema({
     password: {
         type: String
     },
+    friends: {
+        type: mongoose.Schema.Types.Array
+    },
     avatar_img: {
         type: String,
         default: 'profile_default.png'

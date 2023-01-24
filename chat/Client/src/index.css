@@ -7,6 +7,15 @@
   grid-template-rows: 11% 81% 8%;
 }
 
+.grid-users {
+  display: grid;
+  grid-template-rows: 6% 7% 77% 10%;
+}
+
+.wrapping-mess {
+  overflow-wrap: break-word;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }

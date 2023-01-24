@@ -41,12 +41,17 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
                 socket.current.off('receive-msg')
             }
         }        
-        // chatEl.current?.scrollIntoView({ behavior: "smooth" })
     }, [selected, socket])
-
+    
     useEffect(() => {
         receivedMess && setChatData(prev => [...prev, receivedMess])
     }, [receivedMess])
+
+    useEffect(() => {
+        if (chatEl.current) {
+            chatEl.current.scrollTop = chatEl.current.scrollHeight;
+        }
+    }, [chatData])
 
     const handleSendMess = async (e) => {
         e.preventDefault()
@@ -74,7 +79,7 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
             console.log(err);
         })
     }
- 
+
     return (
     <>
         <div className='flex justify-end'>
@@ -92,7 +97,7 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
         {
             selected.username
             ?
-                <div className='grid-temp bg-white rounded-2xl h-full shadow-md p-4'>
+                <div className='grid-temp bg-white overflow-hidden rounded-2xl h-full shadow-md p-4'>
                     <div className='flex pb-2 border-b border-zinc-300'>
                         <img className='w-8 h-8' src={selected.avatar_img} />
                         <div className='flex pl-1.5'>
@@ -102,8 +107,8 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
                     <div ref={chatEl} className='chtEl my-2 min-w-full overflow-y-scroll flex flex-col py-2 pr-3'>
                         <ChatMessages chatData={chatData} loggedUser={loggedUser} />
                     </div>
-                    <form onSubmit={e => handleSendMess(e)} className='flex bg-gray-200 rounded-md h-7 items-center'>
-                        <input type='text' value={message} onChange={e => setMessage(e.target.value)} className='w-full pl-3 h-7 bg-transparent outline-none text-xs placeholder-gray-500 placeholder' placeholder='Your message' />
+                    <form onSubmit={e => handleSendMess(e)} id='message' className='flex h-max bg-gray-200 rounded-md items-center'>
+                        <input value={message} onChange={e => setMessage(e.target.value)} className='w-full wrapping-mess h-8 pl-3 py-1 bg-transparent outline-none text-xs placeholder-gray-500' placeholder='Your message' ></input>
                         <button type='submit' className='px-2'>
                             <IoMdSend className='w-5 h-5' />
                         </button>
