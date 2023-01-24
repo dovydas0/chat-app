@@ -1,14 +1,64 @@
-import { React, useState } from 'react'
+import { React, useState, useRef, useEffect } from 'react'
+import axios from 'axios'
 
-const AddFriendPrompt = ({ handleFriendPropmt }) => {
-    const [ friendEntry, setFriendEntry ] = useState('')
+const AddFriendPrompt = ({ handleFriendPropmt, loggedUser }) => {
+  const [ friendEntry, setFriendEntry ] = useState('')
+  const [ allUsers, setAllUsers ] = useState([])
+
+  const handleBgClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleFriendPropmt()
+    }
+  }
+
+  const addFriend = async (friend) => {
+    if (friend) {
+      await axios.post('http://localhost:8000/api/add-friend', {
+        friend,
+        loggedUser
+      })
+      .then(res => {
+        if (res.data.status) {
+          handleFriendPropmt()
+        } else {
+          console.log(res.data.status);
+          handleFriendPropmt()
+        }
+      })
+      .catch(err => {console.log(err)})
+    }
+  }
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/all-users')
+    .then(res => {
+      const users = res.data.users.filter(user => user._id !== loggedUser._id)
+      setAllUsers(users)
+    })
+    .catch(err => {console.log(err)})
+  }, [])
 
   return (
-    <div onClick={handleFriendPropmt} className='w-screen h-screen absolute flex left-0 top-0 bg-black/50'>
-        <div className='bg-white rounded-2xl w-[32rem] h-1/2 m-auto'>
-            <h2 className='flex justify-center font-bold my-3'>Add a Friend</h2>
-            <hr className='m-auto w-[95%] border-t border-zinc-300' />
-            <input value={friendEntry} onChange={e => setFriendEntry(e.target.value)} />
+    <div onClick={handleBgClick} className='w-screen h-screen absolute flex left-0 top-0 bg-black/50'>
+        <div className='bg-white rounded-2xl w-60 h-4/5 m-auto'>
+          <h2 className='flex justify-center font-bold my-2'>Add a Friend</h2>
+          <input value={friendEntry} onChange={e => setFriendEntry(e.target.value)} className='outline-none border-2 flex m-auto w-[95%] h-7 px-2 text-sm rounded-2xl' placeholder='Search' />
+          <div className='mb-2 mt-3'>
+            {
+              allUsers
+              ?
+                allUsers.map((user, index) => {
+                  return (
+                    <div key={index} onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none odd:bg-zinc-200 even:bg-zinc-100 hover:odd:bg-gray-50 hover:even:bg-gray-50'>
+                      <img src={user.avatar_img} className='w-9 h-9 mr-2' />
+                      <p>{user.username}</p>
+                    </div>
+                  )
+                })
+              :
+                ''
+            }
+          </div>
         </div>
     </div>
   )

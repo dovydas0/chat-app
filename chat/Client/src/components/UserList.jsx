@@ -5,7 +5,7 @@ import User from './User'
 import AddFriendPrompt from './AddFriendPrompt'
 import axios from 'axios'
 
-const UserList = ({ handleSelect, selected, contacts }) => {
+const UserList = ({ handleSelect, selected, contacts, loggedUser }) => {
     const [ friendAddition, setFriendAddition ] = useState(false)
     const userHtmlEl = useRef()
     const userSectionHtmlEl = useRef()
@@ -25,9 +25,6 @@ const UserList = ({ handleSelect, selected, contacts }) => {
 
     const handleFriendPropmt = async () => {
         setFriendAddition(prev => !prev)
-        // await axios.post('/api/add-friend', {
-
-        // })
     }
 
     return (
@@ -57,7 +54,7 @@ const UserList = ({ handleSelect, selected, contacts }) => {
             </div>
             <button onClick={handleFriendPropmt} className='border px-2 py-1 text-sm w-28 rounded-3xl bg-orange-300 m-auto'>Add friends</button>
             {
-                friendAddition ? <AddFriendPrompt handleFriendPropmt={handleFriendPropmt} /> : ''
+                friendAddition ? <AddFriendPrompt handleFriendPropmt={handleFriendPropmt} loggedUser={loggedUser} /> : ''
             }
         </div>
     )

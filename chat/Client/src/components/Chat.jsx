@@ -18,10 +18,14 @@ const Chat = ({ loggedUser }) => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/all-users')
+        axios.post('http://localhost:8000/api/all-friends', {
+            loggedUser
+        })
         .then(res => {
-            const users = res.data.users.filter(user => user._id != loggedUser._id)
-            setContacts(users)
+            // const users = res.data.users.filter(user => user._id !== loggedUser._id)
+            if (res.data.status) {
+                setContacts(res.data.friends[0].friends)
+            }
         })
         .catch(err => console.log(err))
     }, [])
@@ -39,7 +43,7 @@ const Chat = ({ loggedUser }) => {
     return(
         <div className="flex m-auto w-3/4 h-3/4 bg-gray-100 rounded-2xl">
             <MenuBar />
-            <UserList handleSelect={handleSelect} selected={selected} contacts={contacts} />
+            <UserList handleSelect={handleSelect} selected={selected} contacts={contacts} loggedUser={loggedUser} />
             <Content selected={selected} profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );

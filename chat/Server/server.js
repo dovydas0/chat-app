@@ -46,6 +46,20 @@ app.get("/api/all-users", async (req, res) => {
     return res.json({ users })
 })
 
+app.post("/api/all-friends", async (req, res) => {
+    const { loggedUser } = req.body
+
+    if (loggedUser) {
+        const friends = await Users.find(loggedUser).select([
+            "friends"
+        ])
+
+        return res.json({ status: true, friends })
+    }
+    
+    return res.json({ status: false })
+})
+
 app.post("/api/get-chat", async (req, res) => {
     const { senderID, receiverID } = req.body
 
@@ -95,22 +109,30 @@ app.post("/api/login", async (req, res) => {
 })
 
 app.post("/api/add-friend", async (req, res) => {
+    const { friend, loggedUser } = req.body
+    const friendUser = await Users.findOne({ _id: friend._id })
+    .updateOne({ $addToSet: {
+        friends: {
+            username: loggedUser.username,
+            avatar_img: loggedUser.avatar_img,
+            id: loggedUser._id
+        }
+    }})
+    const logUser = await Users.findOne({ _id: loggedUser._id })
+    .updateOne({ $addToSet: {
+        friends: {
+            username: friend.username,
+            avatar_img: friend.avatar_img,
+            id: friend._id
+        }
+    }})
 
-    // const { username, password} = req.body
+    
+    if (friendUser && logUser) {
+        return res.json({ status: true })
+    }
 
-    // const usernameCheck = await Users.findOne({ username })
-    // if (usernameCheck) {
-    //     return res.json({ status: false })
-    // }
-
-    // const hashedPassword = await bcrypt.hash(password, 10)
-    // const user = await Users.create({
-    //     username,
-    //     password: hashedPassword,
-    // })
-    // delete user.password
-
-    return res.json({ status: true })
+    return res.json({ status: false })
 })
 
 app.post("/api/add-user", async (req, res) => {
@@ -131,6 +153,7 @@ app.post("/api/add-user", async (req, res) => {
     return res.json({ status: true })
 })
 
+// Server listening
 const server = app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 })
