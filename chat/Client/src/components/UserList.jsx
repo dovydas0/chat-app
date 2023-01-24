@@ -1,9 +1,8 @@
 import { React, useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
-import User from './User'
 import AddFriendPrompt from './AddFriendPrompt'
-import axios from 'axios'
+import User from './User'
 
 const UserList = ({ handleSelect, selected, contacts, loggedUser }) => {
     const [ friendAddition, setFriendAddition ] = useState(false)
@@ -25,6 +24,7 @@ const UserList = ({ handleSelect, selected, contacts, loggedUser }) => {
 
     const handleFriendPropmt = async () => {
         setFriendAddition(prev => !prev)
+        console.log(contacts);
     }
 
     return (
@@ -52,7 +52,7 @@ const UserList = ({ handleSelect, selected, contacts, loggedUser }) => {
                 }
                 </div>
             </div>
-            <button onClick={handleFriendPropmt} className='border px-2 py-1 text-sm w-28 rounded-3xl bg-orange-300 m-auto'>Add friends</button>
+            <button onClick={handleFriendPropmt} className='border-2 border-indigo-400 px-2 py-1 text-sm w-28 rounded-3xl bg-indigo-50 m-auto hover:bg-indigo-300'>Add friends</button>
             {
                 friendAddition ? <AddFriendPrompt handleFriendPropmt={handleFriendPropmt} loggedUser={loggedUser} /> : ''
             }

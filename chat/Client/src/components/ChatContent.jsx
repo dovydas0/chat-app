@@ -60,6 +60,9 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
             return
         }
 
+        console.log(selected);
+        console.log(loggedUser);
+
         setMessage('')
 
         await axios.post('http://localhost:8000/api/send-mess', {

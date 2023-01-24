@@ -115,7 +115,7 @@ app.post("/api/add-friend", async (req, res) => {
         friends: {
             username: loggedUser.username,
             avatar_img: loggedUser.avatar_img,
-            id: loggedUser._id
+            _id: loggedUser._id
         }
     }})
     const logUser = await Users.findOne({ _id: loggedUser._id })
@@ -123,7 +123,7 @@ app.post("/api/add-friend", async (req, res) => {
         friends: {
             username: friend.username,
             avatar_img: friend.avatar_img,
-            id: friend._id
+            _id: friend._id
         }
     }})
 
