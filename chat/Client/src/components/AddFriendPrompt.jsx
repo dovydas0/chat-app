@@ -1,4 +1,4 @@
-import { React, useState, useRef, useEffect } from 'react'
+import { React, useState, useEffect } from 'react'
 import axios from 'axios'
 
 const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
@@ -45,18 +45,20 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
           <input value={friendEntry} onChange={e => setFriendEntry(e.target.value)} className='outline-none border-2 flex m-auto w-[95%] h-7 px-2 text-sm rounded-2xl' placeholder='Search' />
           <div className='mb-2 mt-3'>
             {
-              allUsers
+              allUsers.length > 0
               ?
                 allUsers.map((user, index) => {
                   return (
-                    <div key={index} onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none odd:bg-zinc-200 even:bg-zinc-100 hover:odd:bg-gray-50 hover:even:bg-gray-50'>
-                      <img src={user.avatar_img} className='w-9 h-9 mr-2' />
-                      <p>{user.username}</p>
+                    <div key={index} className='border-b border-zinc-400 last:border-none'>
+                      <div onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400'>
+                        <img src={user.avatar_img} className='w-9 h-9 mr-2' />
+                        <p>{user.username}</p>
+                      </div>
                     </div>
                   )
                 })
               :
-                ''
+                <p className='flex justify-center mt-2 text-sm text-zinc-600'>No Users Found</p>
             }
           </div>
         </div>

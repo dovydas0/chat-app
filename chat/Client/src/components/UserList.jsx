@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useRef } from 'react'
+import { React, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
@@ -21,7 +21,7 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
         }
     })
 
-    const handleFriendPrompt = async () => {
+    const handleFriendPrompt = () => {
         setFriendAddition(prev => !prev)
     }
 
@@ -37,16 +37,20 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
             <div ref={userSectionHtmlEl} className='-mx-3'>
                 <div ref={userHtmlEl} className='flex flex-col m-3'>
                 {
-                    contacts.map((user, index) => {
-                        return (
-                            <User
-                                key={index}
-                                user={user}
-                                selectedUser={user === selected}
-                                onClick={() => handleSelect(user)}
-                            />
-                        )
-                    })
+                    contacts.length > 0 
+                    ?
+                        contacts.map((user, index) => {
+                            return (
+                                <User
+                                    key={index}
+                                    user={user}
+                                    selectedUser={user === selected}
+                                    onClick={() => handleSelect(user)}
+                                />
+                            )
+                        })
+                    :
+                        <p className='flex justify-center mt-2 text-sm text-zinc-600'>No Friends Found</p>
                 }
                 </div>
             </div>

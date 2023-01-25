@@ -8,6 +8,15 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
     const [ message, setMessage ] = useState('')
     const [ chatData, setChatData ] = useState('')
     const chatEl = useRef()
+    
+    const getChatData = async () => {
+        const data = await axios.post('http://localhost:8000/api/get-chat', {
+            senderID: loggedUser._id,
+            receiverID: selected._id
+        })
+
+        return data
+    }
 
     useEffect(() => {
         setChatData('')
@@ -19,15 +28,6 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
         })
 
     }, [selected])
-
-    const getChatData = async () => {
-        const data = await axios.post('http://localhost:8000/api/get-chat', {
-            senderID: loggedUser._id,
-            receiverID: selected._id
-        })
-
-        return data
-    }
     
     useEffect(() => {
         if (socket.current) {
@@ -56,12 +56,12 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
     const handleSendMess = async (e) => {
         e.preventDefault()
 
-        if (e.target[0].value == '') {
+        if (e.target[0].value === '') {
             return
         }
 
-        console.log(selected);
-        console.log(loggedUser);
+        // console.log(selected);
+        // console.log(loggedUser);
 
         setMessage('')
 
@@ -93,7 +93,7 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
                 :
                     ''
             }
-            <div className='rounded-2xl shadow-sm shadow-zinc-400 mb-2'>
+            <div className='rounded-2xl shadow-sm hover:shadow-none shadow-zinc-400 mb-2'>
                 <img onClick={handleProfileOpening} className='w-[26px] cursor-pointer' src={loggedUser ? loggedUser.avatar_img : ''} />
             </div>
         </div>
@@ -120,7 +120,7 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
             :
                 <div className='h-full'>
                     <hr className='m-auto w-[95%] border-t border-zinc-300' />
-                    <p className='flex h-full place-content-center items-center select-none'>Please select the user to chat to</p>
+                    <p className='flex h-full text-sm text-zinc-600 place-content-center items-center select-none'>Please select the user to chat to</p>
                 </div>
         }
     </>

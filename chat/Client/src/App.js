@@ -1,7 +1,7 @@
 import { React } from 'react'
 import Chat from './components/Chat'
 import Auth from './components/Auth'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import './App.css'
 
 function App() {
