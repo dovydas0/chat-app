@@ -12,7 +12,7 @@
 /build
 
 # misc
-.tailwindcss.txt
+tailwindcss.txt
 .DS_Store
 .env.local
 .env.development.local
