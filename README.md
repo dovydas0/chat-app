@@ -9,8 +9,8 @@ Users who have invited their friends can start chating with each other in real-t
 
 Login window
 
-![login](./screenshots/login.png)
+![login](./screenshots/Login.png)
 
 Signup window
 
-![signup](./screenshots/signup.png)
+![signup](./screenshots/Signup.png)
