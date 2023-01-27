@@ -39,7 +39,7 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
   }, [])
 
   return (
-    <div onClick={handleBgClick} className='w-screen h-screen absolute flex left-0 top-0 bg-black/50'>
+    <div onClick={handleBgClick} className='z-10 w-screen h-screen absolute flex left-0 top-0 bg-black/50'>
         <div className='bg-white rounded-2xl w-60 h-4/5 m-auto'>
           <h2 className='flex justify-center font-bold my-2'>Add a Friend</h2>
           <input value={friendEntry} onChange={e => setFriendEntry(e.target.value)} className='outline-none border-2 flex m-auto w-[95%] h-7 px-2 text-sm rounded-2xl' placeholder='Search' />
