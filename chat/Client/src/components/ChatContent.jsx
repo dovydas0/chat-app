@@ -60,9 +60,6 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
             return
         }
 
-        // console.log(selected);
-        // console.log(loggedUser);
-
         setMessage('')
         const chat = [...chatData]
         chat.push(
