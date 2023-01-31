@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
-import SearchUsers from './SearchUsers'
 
 const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, contacts, loggedUser }) => {
     const [ searchText, setSearchText ] = useState('');
@@ -44,13 +43,13 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
         const filteredRes = []
 
         contacts.forEach((contact) => {
-            if (searchText === contact.username.substr(0, searchText.length) && searchText != '') {
+            if (searchText === contact.username.substr(0, searchText.length) && searchText !== '') {
                 filteredRes.push(contact)
             }
         })
 
         setSearchRes(filteredRes)
-    }, [searchText])
+    }, [searchText, contacts])
 
     const handleFriendPrompt = () => {
         setFriendAddition(prev => !prev)
@@ -100,7 +99,7 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
                         })
                 }
                 {
-                    searchText.length > 0 && searchRes.length < 1
+                    (searchText.length > 0 && searchRes.length < 1) || contacts.length < 1
                     ?
                         <p className='flex justify-center mt-2 text-sm text-zinc-600'>No Friends Found</p>
                     :
