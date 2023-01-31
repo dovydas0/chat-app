@@ -168,12 +168,10 @@ const io = socket(server, {
 
 io.on('connect', socket => {        
     socket.on('add-user', id => {
-        console.log(socket.id + " user added");
         socketUsers.push({socketID: socket.id, userID: id})
     })
     
     socket.on('disconnect', () => {
-        console.log(socket.id + " disconnected");
         socketUsers = socketUsers.filter(user => user.socketID !== socket.id)
     })
 
