@@ -6,25 +6,11 @@ import User from './User'
 
 const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, contacts, loggedUser }) => {
     const [ searchText, setSearchText ] = useState('');
-    const [ searchRes, setSearchRes ] = useState([])
+    const [ searchRes, setSearchRes ] = useState(['hi'])
 
     const inputRef = useRef()
     const userHtmlEl = useRef()
     const userSectionHtmlEl = useRef()
-
-    useEffect(() => {
-        const handleClick = (e) => {
-            if (userHtmlEl.current && !userHtmlEl.current.contains(e.target) && userSectionHtmlEl.current.contains(e.target)) {
-                handleSelect('')
-                setSearchText('')
-            }
-        }
-        
-        document.addEventListener('click', handleClick)
-        return () => {
-            document.removeEventListener('click', handleClick)
-        }
-    })
     
     useEffect(() => {
         const handleInputClick = (e) => {
@@ -32,10 +18,18 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
                 setSearchText('')
             }
         }
+        const handleClick = (e) => {
+            if (userHtmlEl.current && !userHtmlEl.current.contains(e.target) && userSectionHtmlEl.current.contains(e.target)) {
+                handleSelect('')
+                setSearchText('')
+            }
+        }
         
         document.addEventListener('click', handleInputClick)
+        document.addEventListener('click', handleClick)
         return () => {
             document.removeEventListener('click', handleInputClick)
+            document.removeEventListener('click', handleClick)
         }
     })
 

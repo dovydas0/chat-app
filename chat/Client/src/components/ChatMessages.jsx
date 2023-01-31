@@ -2,7 +2,6 @@ import React from 'react'
 
 const ChatMessages = ({ chatData, loggedUser }) => {
   
-  
     return (
         <>
             {
