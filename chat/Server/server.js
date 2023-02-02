@@ -4,6 +4,8 @@ const multer = require('multer')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const fs = require('fs')
+const path = require('path')
 const app = express()
 const socket = require('socket.io')
 const Users = require('./models/userModel')
@@ -16,6 +18,7 @@ let socketUsers = []
 // Middleware
 app.use(cors())
 app.use(bodyParser.json())
+app.use(express.static('profile_images'))
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -58,6 +61,30 @@ app.get("/api/all-users", async (req, res) => {
     return res.json({ users })
 })
 
+app.get('/profile-images/:file', (req, res) => {
+    res.sendFile(`${__dirname}/profile_images/${req.params.file}`)
+})
+
+// app.get("/api/all-images", async (req, res) => {
+//     const dir = './profile_images'
+//     files = fs.readdirSync(dir)
+
+//     const buffer = []
+
+//     files.forEach(file => {
+//         const filePath = path.join(dir, file)
+//         fs.readFile(filePath, (err, data) => {
+//             if (err) {
+//                 console.log(err)
+//                 return
+//             }
+//             buffer.push(data)
+//         })
+//     })
+
+//     res.send(buffer)
+// })
+
 app.post("/api/all-friends", async (req, res) => {
     const { loggedUser } = req.body
 
@@ -91,9 +118,7 @@ app.post("/api/get-chat", async (req, res) => {
     return res.json({ status: true, data: chat })
 })
 
-app.post("/api/upload-img", (req, res) => {
-    const img = req.file
-
+app.post("/api/upload-img", async (req, res) => {
     upload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
@@ -102,8 +127,6 @@ app.post("/api/upload-img", (req, res) => {
         }
         return res.status(200).send(req.file)
     })
-
-    console.log(img);
 })
 
 app.post("/api/send-mess", async (req, res) => {
