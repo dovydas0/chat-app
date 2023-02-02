@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const multer = require('multer')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
@@ -15,6 +16,17 @@ let socketUsers = []
 // Middleware
 app.use(cors())
 app.use(bodyParser.json())
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'profile_images')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
+
+const upload = multer({ storage: storage }).single('file')
 
 // DB connection
 try {
@@ -77,6 +89,21 @@ app.post("/api/get-chat", async (req, res) => {
     }
     
     return res.json({ status: true, data: chat })
+})
+
+app.post("/api/upload-img", (req, res) => {
+    const img = req.file
+
+    upload(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        return res.status(200).send(req.file)
+    })
+
+    console.log(img);
 })
 
 app.post("/api/send-mess", async (req, res) => {
