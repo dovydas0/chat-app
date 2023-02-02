@@ -79,7 +79,7 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
                   return (
                     <div key={index} className='border-b border-zinc-400 last:border-none'>
                       <div onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400 hover:cursor-pointer'>
-                        <img src={user.avatar_img} className='w-9 h-9 mr-2' />
+                        <img src={`http://localhost:8000/profile-images/${user.avatar_img}`} className='w-9 h-9 rounded-full mr-2' />
                         <p>{user.username}</p>
                       </div>
                     </div>

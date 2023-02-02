@@ -18,11 +18,11 @@ let socketUsers = []
 // Middleware
 app.use(cors())
 app.use(bodyParser.json())
-app.use(express.static('profile_images'))
+app.use(express.static('profile-images'))
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'profile_images')
+        cb(null, 'profile-images')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
@@ -62,7 +62,7 @@ app.get("/api/all-users", async (req, res) => {
 })
 
 app.get('/profile-images/:file', (req, res) => {
-    res.sendFile(`${__dirname}/profile_images/${req.params.file}`)
+    res.sendFile(`${__dirname}/profile-images/${req.params.file}`)
 })
 
 // app.get("/api/all-images", async (req, res) => {
@@ -125,8 +125,37 @@ app.post("/api/upload-img", async (req, res) => {
         } else if (err) {
             return res.status(500).json(err)
         }
+
         return res.status(200).send(req.file)
     })
+})
+
+app.post("/api/update-img", async (req, res) => {
+    const { loggedUser, fileName } = req.body
+    
+    const user = await Users.findOne({ _id: loggedUser._id })
+    .updateOne({
+        avatar_img: fileName
+    })
+
+    const friends = await Users.find({ 'friends._id': loggedUser._id })
+    .updateOne({
+        friends: {
+            username: loggedUser.username,
+            avatar_img: fileName,
+            _id: loggedUser._id
+        }
+    })
+
+    if (!friends) {
+        return res.json({ status: false })
+    }
+
+    if (!user) {
+        return res.json({ status: false })
+    }
+
+    return res.json({ status: true })
 })
 
 app.post("/api/send-mess", async (req, res) => {
