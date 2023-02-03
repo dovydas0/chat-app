@@ -9,7 +9,7 @@ Users who have invited their friends can start chating with each other in real-t
 
 Technologies used for this project:
 
-HTML/CSS, ReactJS, Redux, NodeJS, Express, Socket protocol, MongoDB/Mongoose, 
+HTML/CSS, Tailwindcss, ReactJS, Redux, NodeJS, Express, Socket protocol, MongoDB/Mongoose, 
 
 ## Screenshots
 

@@ -71,19 +71,19 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
         )
         setChatData(chat)
         
-        await axios.post('http://localhost:8000/api/send-mess', {
-            message,
-            senderID: loggedUser._id,
-            receiverID: selected._id
-        })
-        .then(res => {
+        try {
+            const res = await axios.post('http://localhost:8000/api/send-mess', {
+                message,
+                senderID: loggedUser._id,
+                receiverID: selected._id
+            })
+            
             if (res.data.status) {
                 socket.current.emit('send-msg', res.data.message)
             }
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
