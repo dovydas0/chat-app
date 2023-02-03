@@ -65,26 +65,6 @@ app.get('/profile-images/:file', (req, res) => {
     res.sendFile(`${__dirname}/profile-images/${req.params.file}`)
 })
 
-// app.get("/api/all-images", async (req, res) => {
-//     const dir = './profile_images'
-//     files = fs.readdirSync(dir)
-
-//     const buffer = []
-
-//     files.forEach(file => {
-//         const filePath = path.join(dir, file)
-//         fs.readFile(filePath, (err, data) => {
-//             if (err) {
-//                 console.log(err)
-//                 return
-//             }
-//             buffer.push(data)
-//         })
-//     })
-
-//     res.send(buffer)
-// })
-
 app.post("/api/all-friends", async (req, res) => {
     const { loggedUser } = req.body
 

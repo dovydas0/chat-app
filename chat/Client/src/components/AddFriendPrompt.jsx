@@ -4,6 +4,7 @@ import axios from 'axios'
 
 const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
   const [ friendEntry, setFriendEntry ] = useState('')
+  const [ noUsers, setNoUsers ] = useState(false)
   const [ allUsers, setAllUsers ] = useState([])
   const [ searchRes, setSearchRes ] = useState([]);
 
@@ -16,30 +17,30 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
   useEffect(() => {
     const filteredRes = []
 
-    allUsers.forEach((user) => {
-        if (friendEntry === user.username.substr(0, friendEntry.length) && friendEntry !== '') {
-            filteredRes.push(user)
-        }
-    })
+    if (noUsers === false) {
+      allUsers.forEach((user) => {
+          if (friendEntry === user.username.substr(0, friendEntry.length) && friendEntry !== '') {
+              filteredRes.push(user)
+          }
+      })
+    }
 
     setSearchRes(filteredRes)
   }, [friendEntry, allUsers])
 
   const addFriend = async (friend) => {
     if (friend) {
-      await axios.post('http://localhost:8000/api/add-friend', {
+      const result = await axios.post('http://localhost:8000/api/add-friend', {
         friend,
         loggedUser
       })
-      .then(res => {
-        if (res.data.status) {
-          handleFriendPrompt()          
-        } else {
-          console.log(res.data.status);
-          handleFriendPrompt()
-        }
-      })
-      .catch(err => {console.log(err)})
+
+      if (result.data.status) {
+        handleFriendPrompt()          
+      } else {
+        console.log(result.data.status);
+        handleFriendPrompt()
+      }
     }
   }
 
@@ -47,10 +48,16 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
     axios.get('http://localhost:8000/api/all-users')
     .then(res => {
       const users = res.data.users.filter(user => user._id !== loggedUser._id)
+      if (users.length < 1)
+      {
+        return setNoUsers(true)
+      }
+      setNoUsers(false)
       setAllUsers(users)
     })
     .catch(err => {console.log(err)})
   }, [])
+
 
   return (
     <div onClick={handleCloseClick} className='z-10 w-screen h-screen absolute flex left-0 top-0 bg-black/50'>
@@ -68,7 +75,7 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
                   return (
                     <div key={index} className='border-b border-zinc-400 last:border-none'>
                       <div onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400 hover:cursor-pointer'>
-                        <img src={user.avatar_img} className='w-9 h-9 mr-2' />
+                        <img src={`http://localhost:8000/profile-images/${user.avatar_img}`} className='w-9 h-9 object-cover rounded-full mr-2' />
                         <p>{user.username}</p>
                       </div>
                     </div>
@@ -77,9 +84,9 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
               :
                 allUsers.map((user, index) => {
                   return (
-                    <div key={index} className='border-b border-zinc-400 last:border-none'>
-                      <div onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400 hover:cursor-pointer'>
-                        <img src={`http://localhost:8000/profile-images/${user.avatar_img}`} className='w-9 h-9 rounded-full mr-2' />
+                    <div key={index} className='smooth border-b border-zinc-400 last:border-none'>
+                      <div onClick={() => addFriend(user)} className='smooth flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400 hover:cursor-pointer'>
+                        <img src={`http://localhost:8000/profile-images/${user.avatar_img}`} className='w-9 h-9 object-cover rounded-full mr-2' />
                         <p>{user.username}</p>
                       </div>
                     </div>
@@ -87,7 +94,7 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
                 })
             }
             {
-              allUsers.length < 1
+              allUsers.length < 1 && noUsers === false
               ?
                 <div className='h-full flex items-center'>
                   <svg aria-hidden="true" className="w-7 h-7 mr-auto ml-auto text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +106,7 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
                 ''
             }
             {
-              friendEntry.length > 0 && searchRes.length < 1 || allUsers.length < 1
+              (friendEntry.length > 0 && searchRes.length < 1) || noUsers === true
               ?
                 <p className='flex justify-center mt-2 text-sm text-zinc-600'>No Users Found</p>
               :

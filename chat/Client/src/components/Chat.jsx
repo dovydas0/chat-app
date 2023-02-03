@@ -7,7 +7,6 @@ import axios from 'axios'
 import io from 'socket.io-client'
 
 const Chat = ({ loggedUser }) => {
-    const [ files, setFiles ] = useState([])
     const [ selected, setSelected ] = useState('')
     const [ contacts, setContacts ] = useState([])
     const [ friendAddition, setFriendAddition ] = useState(false)
@@ -18,20 +17,6 @@ const Chat = ({ loggedUser }) => {
         socket.current = io('http://localhost:8000')
         socket.current.emit('add-user', loggedUser._id)
     }, [loggedUser])
-
-    // useEffect(() => {
-    //     axios.get('http://localhost:8000/api/all-images', { responseType: 'arraybuffer' })
-    //     .then(res => {
-    //         const buffer = res.data
-    //         const bufferArray = Array.from(new Uint8Array(buffer))
-    //         const fileBlobs = []
-    //         bufferArray.forEach(buffer => {
-    //             const blob = new Blob([buffer], { type: 'application/octet-stream' })
-    //             fileBlobs.push(blob)
-    //         })
-    //         setFiles(fileBlobs)
-    //     })
-    // }, [])
 
     useEffect(() => {
         axios.post('http://localhost:8000/api/all-friends', {

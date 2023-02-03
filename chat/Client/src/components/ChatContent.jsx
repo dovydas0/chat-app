@@ -97,7 +97,7 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
                     ''
             }
             <div className='rounded-2xl shadow-sm hover:shadow-none shadow-zinc-400 mb-2'>
-                <img onClick={handleProfileOpening} className='w-7 h-7 cursor-pointer rounded-full' src={loggedUser ? `http://localhost:8000/profile-images/${loggedUser.avatar_img}` : ''} />
+                <img onClick={handleProfileOpening} className='w-7 h-7 object-cover cursor-pointer rounded-full' src={loggedUser ? `http://localhost:8000/profile-images/${loggedUser.avatar_img}` : ''} />
             </div>
         </div>
         {
@@ -105,7 +105,7 @@ const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => 
             ?
                 <div className='grid-temp bg-white overflow-hidden rounded-2xl h-full shadow-md p-4'>
                     <div className='flex pb-2 border-b border-zinc-300'>
-                        <img className='w-8 h-8 rounded-full' src={`http://localhost:8000/profile-images/${selected.avatar_img}`} />
+                        <img className='w-8 h-8 object-cover rounded-full' src={`http://localhost:8000/profile-images/${selected.avatar_img}`} />
                         <div className='flex pl-1.5'>
                             <p className='flex text-sm items-center'>{selected.username}</p>
                         </div>

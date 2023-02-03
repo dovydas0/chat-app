@@ -16,6 +16,10 @@
   overflow-wrap: break-word;
 }
 
+.smooth {
+  transition: all 0.05s ease-in-out;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }

@@ -101,7 +101,7 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
                 }
                 </div>
             </div>
-            <button onClick={handleFriendPrompt} className='border-2 border-indigo-400 px-2 py-1 text-sm w-28 rounded-3xl bg-indigo-50 m-auto hover:bg-indigo-300'>Add friends</button>
+            <button onClick={handleFriendPrompt} className='bg-indigo-500 px-5 py-1 text-sm text-white rounded-lg m-auto hover:shadow-lg'>Add friends</button>
             {
                 friendAddition ? <AddFriendPrompt handleFriendPrompt={handleFriendPrompt} loggedUser={loggedUser} /> : ''
             }
