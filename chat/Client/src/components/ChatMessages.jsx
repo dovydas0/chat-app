@@ -1,6 +1,7 @@
 import React from 'react'
 
 const ChatMessages = ({ chatData, loggedUser }) => {
+    console.log('loading messages');
   
     return (
         <>
