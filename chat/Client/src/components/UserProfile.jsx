@@ -1,35 +1,30 @@
 import React from 'react'
-import axios from 'axios';
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { updateUserAsync } from '../store/authSlice'
 
 const UserProfile = ({ loggedUser }) => {
+  const dispatch = useDispatch()
 
   const uploadImage = async (e) => {
     const data = new FormData()
     data.append('file', e.target.files[0])
 
-    let fileName = ''
+    const uploadImg = await axios.post('http://localhost:8000/api/upload-img', data)
+  
+    const fileName = uploadImg.data.filename
     
-    await axios.post('http://localhost:8000/api/upload-img', data)
-    .then((res) => {
-      fileName = res.data.filename
-      console.log(res.status)
-      
-      axios.post('http://localhost:8000/api/update-img', {
-        loggedUser: loggedUser,
-        fileName: fileName
-      })
-      .then((res) => {
-        console.log(res.status);
-        axios.get('http://localhost:8000/api/all-users')
-        .then(res => {
-          const newUsr = res.data.users.filter(user => user._id === loggedUser._id)
-          console.log(newUsr[0])
-          /*
-            SET NEW LOGGED USER WITH NEW AVATAR_IMG
-          */
-        })
-      })
-    }) 
+    await axios.post('http://localhost:8000/api/update-img', {
+      loggedUser: loggedUser,
+      fileName: fileName
+    })
+
+    const allUsers = await axios.get('http://localhost:8000/api/all-users')
+    const newUsr = allUsers.data.users.filter(user => user._id === loggedUser._id)
+   
+    if (newUsr[0]) {
+      dispatch(updateUserAsync(newUsr[0]))
+    }    
   }
 
   return (

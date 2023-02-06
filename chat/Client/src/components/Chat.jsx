@@ -1,5 +1,4 @@
 import {React, useState, useEffect, useRef } from 'react'
-import { saveAs } from 'file-saver';
 import MenuBar from './MenuBar'
 import UserList from './UserList'
 import Content from './Content'

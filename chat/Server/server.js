@@ -122,15 +122,6 @@ app.post("/api/update-img", async (req, res) => {
     .updateMany({ $set: {
         'friends.$.avatar_img': fileName
     }})
-    
-    // const friends = await Users.find({ 'friends._id': loggedUser._id })
-    // .updateOne({
-    //     friends: {
-    //         username: loggedUser.username,
-    //         avatar_img: fileName,
-    //         _id: loggedUser._id
-    //     }
-    // })
 
     if (!friends) {
         return res.json({ status: false })
