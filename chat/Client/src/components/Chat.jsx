@@ -29,11 +29,6 @@ const Chat = ({ loggedUser }) => {
         .catch(err => console.log(err))
     }, [friendAddition, socket])
 
-    const handleSelect = (user) => {
-        setSelected(user)
-        setProfileOpened(false)
-    }
-
     const handleProfileOpening = () => {
         setProfileOpened(true)
         setSelected('')
@@ -42,8 +37,8 @@ const Chat = ({ loggedUser }) => {
     return(
         <div className="flex m-auto w-3/4 h-3/4 bg-gray-100 rounded-2xl">
             <MenuBar />
-            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} handleSelect={handleSelect} selected={selected} contacts={contacts} loggedUser={loggedUser} />
-            <Content selected={selected} profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
+            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} contacts={contacts} loggedUser={loggedUser} />
+            <Content profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );
 }

@@ -16,7 +16,6 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
 
   useEffect(() => {
     const filteredRes = []
-
     if (noUsers === false) {
       allUsers.forEach((user) => {
           if (friendEntry === user.username.substr(0, friendEntry.length) && friendEntry !== '') {
@@ -29,33 +28,33 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
   }, [friendEntry, allUsers])
 
   const addFriend = async (friend) => {
+    handleFriendPrompt()
+
     if (friend) {
       const result = await axios.post('http://localhost:8000/api/add-friend', {
         friend,
         loggedUser
       })
 
-      if (result.data.status) {
-        handleFriendPrompt()          
-      } else {
+      if (result.data.status === false) {
         console.log(result.data.status);
-        handleFriendPrompt()
       }
     }
   }
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/all-users')
-    .then(res => {
-      const users = res.data.users.filter(user => user._id !== loggedUser._id)
+    const getUsers = async () => {
+      const allUsers = await axios.get('http://localhost:8000/api/all-users')
+      const users = allUsers.data.users.filter(user => user._id !== loggedUser._id)
       if (users.length < 1)
       {
         return setNoUsers(true)
       }
       setNoUsers(false)
       setAllUsers(users)
-    })
-    .catch(err => {console.log(err)})
+    }
+    getUsers()
+
   }, [])
 
 

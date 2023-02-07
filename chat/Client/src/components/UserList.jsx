@@ -1,12 +1,16 @@
 import { React, useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
+import { selectUser, deselectUser } from '../store/selectedUserSlice'
 
-const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, contacts, loggedUser }) => {
+const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchRes, setSearchRes ] = useState(['hi'])
+    const selectedUser = useSelector(state => state.selected.selectedUser)
+    const dispatch = useDispatch()
 
     const inputRef = useRef()
     const userHtmlEl = useRef()
@@ -20,7 +24,7 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
         }
         const handleClick = (e) => {
             if (userHtmlEl.current && !userHtmlEl.current.contains(e.target) && userSectionHtmlEl.current.contains(e.target)) {
-                handleSelect('')
+                dispatch(deselectUser())
                 setSearchText('')
             }
         }
@@ -75,8 +79,8 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
                                 <User
                                     key={index}
                                     user={user}
-                                    selectedUser={user === selected}
-                                    onClick={() => handleSelect(user)}
+                                    selectedUser={user === selectedUser}
+                                    onClick={() => dispatch(selectUser(user))}
                                 />
                             )
                         })
@@ -86,8 +90,8 @@ const UserList = ({ friendAddition, setFriendAddition, handleSelect, selected, c
                                 <User
                                     key={index}
                                     user={user}
-                                    selectedUser={user === selected}
-                                    onClick={() => handleSelect(user)}
+                                    selectedUser={user === selectedUser}
+                                    onClick={() => dispatch(selectUser(user))}
                                 />
                             )
                         })

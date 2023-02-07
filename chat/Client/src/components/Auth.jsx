@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { loginAsync } from '../store/authSlice'
+import { login } from '../store/authSlice'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
@@ -18,7 +18,7 @@ const Auth = () => {
     const handleSignupSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
-        
+
         if (password !== duplicatePassword || password === '' || username === '') {
             toast.error("Form was not filled correctly")
             setLoading(false)
@@ -51,11 +51,11 @@ const Auth = () => {
 
     }
 
-    const handleLoginSubmit = async (e) => {
+    const handleLoginSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
         
-        await axios.post('http://localhost:8000/api/login', {
+        axios.post('http://localhost:8000/api/login', {
             username,
             password
         })
@@ -69,7 +69,7 @@ const Auth = () => {
                 setLoading(false)
             }
             else if (res.data.status === true) {
-                dispatch(loginAsync(res.data))
+                dispatch(login(res.data))
                 setUsername('')
                 setPassword('')
                 setDuplicatePassword('')

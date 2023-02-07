@@ -1,13 +1,16 @@
 import { React, useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { IoMdSend } from 'react-icons/io'
 import ChatMessages from './ChatMessages'
 import axios from 'axios'
 
-const ChatContent = ({ selected, loggedUser, handleProfileOpening, socket }) => {
+const ChatContent = ({ handleProfileOpening, socket }) => {
     const [ receivedMess, setReceivedMess ] = useState('')
     const [ message, setMessage ] = useState('')
     const [ chatData, setChatData ] = useState('')
     const chatEl = useRef()
+    const selected = useSelector(state => state.selected.selectedUser)
+    const loggedUser = useSelector(state => state.auth.user)
     
     const getChatData = async () => {
         const data = await axios.post('http://localhost:8000/api/get-chat', {

@@ -1,10 +1,12 @@
 import React from 'react'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { updateUserAsync } from '../store/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUser } from '../store/authSlice'
 
-const UserProfile = ({ loggedUser }) => {
+const UserProfile = () => {
   const dispatch = useDispatch()
+  const loggedUser = useSelector(state => state.auth.user)
+
 
   const uploadImage = async (e) => {
     const data = new FormData()
@@ -23,7 +25,7 @@ const UserProfile = ({ loggedUser }) => {
     const newUsr = allUsers.data.users.filter(user => user._id === loggedUser._id)
    
     if (newUsr[0]) {
-      dispatch(updateUserAsync(newUsr[0]))
+      dispatch(updateUser(newUsr[0]))
     }    
   }
 
