@@ -1,16 +1,15 @@
 import { React, useEffect, useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
-import { selectUser, deselectUser } from '../store/selectedUserSlice'
 
-const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) => {
+const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchRes, setSearchRes ] = useState(['hi'])
     const selectedUser = useSelector(state => state.selected.selectedUser)
-    const dispatch = useDispatch()
+    const loggedUser = useSelector(state => state.auth.user)
 
     const inputRef = useRef()
     const userHtmlEl = useRef()
@@ -22,18 +21,10 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) =
                 setSearchText('')
             }
         }
-        const handleClick = (e) => {
-            if (userHtmlEl.current && !userHtmlEl.current.contains(e.target) && userSectionHtmlEl.current.contains(e.target)) {
-                dispatch(deselectUser())
-                setSearchText('')
-            }
-        }
         
         document.addEventListener('click', handleInputClick)
-        document.addEventListener('click', handleClick)
         return () => {
             document.removeEventListener('click', handleInputClick)
-            document.removeEventListener('click', handleClick)
         }
     })
 
@@ -53,6 +44,13 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) =
         setFriendAddition(prev => !prev)
     }
 
+    const handleDeselect = (e) => {
+        if (userHtmlEl.current && !userHtmlEl.current.contains(e.target)) {
+            handleSelect('')
+            setSearchText('')
+        }
+    }
+
     return (
         <div className='grid-users flex-initial overflow-hidden w-64 bg-white pt-3 px-3'>
             <div className='flex w-full place-content-between items-center my-3'>
@@ -69,7 +67,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) =
 
                 />
             </div>
-            <div ref={userSectionHtmlEl} className='-mx-3'>
+            <div ref={userSectionHtmlEl} onClick={e => handleDeselect(e)} className='-mx-3'>
                 <div ref={userHtmlEl} className='flex flex-col m-3'>
                 {
                     searchText.length > 0
@@ -80,7 +78,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) =
                                     key={index}
                                     user={user}
                                     selectedUser={user === selectedUser}
-                                    onClick={() => dispatch(selectUser(user))}
+                                    onClick={() => handleSelect(user)}
                                 />
                             )
                         })
@@ -91,7 +89,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, loggedUser }) =
                                     key={index}
                                     user={user}
                                     selectedUser={user === selectedUser}
-                                    onClick={() => dispatch(selectUser(user))}
+                                    onClick={() => handleSelect(user)}
                                 />
                             )
                         })

@@ -1,4 +1,6 @@
 import {React, useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { deselectUser, selectUser } from '../store/selectedUserSlice'
 import MenuBar from './MenuBar'
 import UserList from './UserList'
 import Content from './Content'
@@ -6,11 +8,11 @@ import axios from 'axios'
 import io from 'socket.io-client'
 
 const Chat = ({ loggedUser }) => {
-    const [ selected, setSelected ] = useState('')
     const [ contacts, setContacts ] = useState([])
     const [ friendAddition, setFriendAddition ] = useState(false)
     const [ profileOpened, setProfileOpened ] = useState(false)
     let socket = useRef()
+    const dispatch = useDispatch()
     
     useEffect(() => {
         socket.current = io('http://localhost:8000')
@@ -31,14 +33,18 @@ const Chat = ({ loggedUser }) => {
 
     const handleProfileOpening = () => {
         setProfileOpened(true)
-        setSelected('')
+        dispatch(deselectUser())
+    }
+    const handleSelect = (user) => {
+        setProfileOpened(false)
+        dispatch(selectUser(user))
     }
 
     return(
         <div className="flex m-auto w-3/4 h-3/4 bg-gray-100 rounded-2xl">
             <MenuBar />
-            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} contacts={contacts} loggedUser={loggedUser} />
-            <Content profileOpened={profileOpened} loggedUser={loggedUser} handleProfileOpening={handleProfileOpening} socket={socket} />
+            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} contacts={contacts} handleSelect={handleSelect} />
+            <Content profileOpened={profileOpened} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );
 }
