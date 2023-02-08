@@ -4,14 +4,13 @@ const multer = require('multer')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
-const fs = require('fs')
-const path = require('path')
 const app = express()
 const socket = require('socket.io')
 const Users = require('./models/userModel')
 const Messages = require('./models/MessagesModel')
 require('dotenv').config()
 
+mongoose.set('strictQuery', false)
 const PORT = 8000
 let socketUsers = []
 
@@ -224,11 +223,37 @@ const io = socket(server, {
 io.on('connect', socket => {        
     socket.on('add-user', id => {
         socketUsers.push({socketID: socket.id, userID: id})
+        io.sockets.emit('active-users', socketUsers)
     })
+
     
     socket.on('disconnect', () => {
         socketUsers = socketUsers.filter(user => user.socketID !== socket.id)
+        io.sockets.emit('active-users', socketUsers)
     })
+    
+    // socket.on('active-users', (data) => {
+    //     const receivingSocket = socketUsers.filter(user => user.userID === data.loggedUser._id)
+    //     const active = []
+        
+    //     socketUsers.forEach(user => {
+    //         const match = data.friends.filter(friend => {
+    //             return friend._id === user.userID
+    //         })
+    //         if (match.length > 0) {
+    //             match[0].active = true;
+    //             active.push(match[0])
+    //         }
+    //     })
+
+        
+    //     if (receivingSocket.length > 0) {
+    //         socket.to(receivingSocket[0].socketID).emit('active-friends', active)
+    //         console.log(active)
+    //     }
+
+    // })
+
 
     socket.on('send-msg', (data) => {
         const receivingSocket = socketUsers.filter(user => user.userID === data.receiverID)

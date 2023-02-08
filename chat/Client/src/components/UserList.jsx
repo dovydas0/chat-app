@@ -88,6 +88,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
                                 <User
                                     key={index}
                                     user={user}
+                                    active={user.active ? true : false}
                                     selectedUser={user === selectedUser}
                                     onClick={() => handleSelect(user)}
                                 />

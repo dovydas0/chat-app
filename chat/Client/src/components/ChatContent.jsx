@@ -33,7 +33,6 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
     }, [selected])
     
     useEffect(() => {
-        console.log(socket.current);
         if (socket.current) {
             socket.current.on('receive-msg', message => {
                 if (selected._id === message.senderID) {
