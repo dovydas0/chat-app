@@ -33,10 +33,10 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
     }, [selected])
     
     useEffect(() => {
+        console.log(socket.current);
         if (socket.current) {
             socket.current.on('receive-msg', message => {
                 if (selected._id === message.senderID) {
-                    console.log('mess received');
                     setReceivedMess(message)
                 }
             })
@@ -60,7 +60,6 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
     const handleSendMess = async (e) => {
         e.preventDefault()
         
-        console.log('mess sent');
         if (e.target[0].value === '') {
             return
         }
@@ -84,7 +83,7 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
             })
             
             if (res.data.status) {
-                socket.current.emit('send-msg', res.data.message)
+                socket.current.emit('send-msg', res.data.message)        
             }
         } catch (err) {
             console.log(err)

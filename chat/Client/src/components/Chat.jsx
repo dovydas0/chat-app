@@ -1,16 +1,17 @@
-import {React, useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { React, useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { deselectUser, selectUser } from '../store/selectedUserSlice'
+import axios from 'axios'
+import io from 'socket.io-client'
 import MenuBar from './MenuBar'
 import UserList from './UserList'
 import Content from './Content'
-import axios from 'axios'
-import io from 'socket.io-client'
 
-const Chat = ({ loggedUser }) => {
+const Chat = () => {
     const [ contacts, setContacts ] = useState([])
     const [ friendAddition, setFriendAddition ] = useState(false)
     const [ profileOpened, setProfileOpened ] = useState(false)
+    const loggedUser = useSelector(state => state.auth.user)
     let socket = useRef()
     const dispatch = useDispatch()
     
@@ -35,6 +36,7 @@ const Chat = ({ loggedUser }) => {
         setProfileOpened(true)
         dispatch(deselectUser())
     }
+    
     const handleSelect = (user) => {
         setProfileOpened(false)
         dispatch(selectUser(user))
