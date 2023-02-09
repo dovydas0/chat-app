@@ -220,7 +220,7 @@ const io = socket(server, {
     },
   });
 
-io.on('connect', socket => {        
+io.on('connection', socket => {        
     socket.on('add-user', id => {
         socketUsers.push({socketID: socket.id, userID: id})
         io.sockets.emit('active-users', socketUsers)
@@ -231,8 +231,18 @@ io.on('connect', socket => {
         socketUsers = socketUsers.filter(user => user.socketID !== socket.id)
         io.sockets.emit('active-users', socketUsers)
     })
-    
-    // socket.on('active-users', (data) => {
+
+    socket.on('send-msg', (data) => {
+        const receivingSocket = socketUsers.filter(user => user.userID === data.receiverID)
+        
+        if (receivingSocket.length > 0) {
+            socket.to(receivingSocket[0].socketID).emit('receive-msg', data)
+        }
+    })
+})
+
+
+ // socket.on('active-users', (data) => {
     //     const receivingSocket = socketUsers.filter(user => user.userID === data.loggedUser._id)
     //     const active = []
         
@@ -253,13 +263,3 @@ io.on('connect', socket => {
     //     }
 
     // })
-
-
-    socket.on('send-msg', (data) => {
-        const receivingSocket = socketUsers.filter(user => user.userID === data.receiverID)
-        
-        if (receivingSocket.length > 0) {
-            socket.to(receivingSocket[0].socketID).emit('receive-msg', data)
-        }
-    })
-})

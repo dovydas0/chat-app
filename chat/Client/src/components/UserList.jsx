@@ -5,7 +5,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
 
-const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect }) => {
+const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect, socket }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchRes, setSearchRes ] = useState(['hi'])
     const selectedUser = useSelector(state => state.selected.selectedUser)
@@ -27,6 +27,36 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
             document.removeEventListener('click', handleInputClick)
         }
     })
+
+    // useEffect(() => {
+    //     if (socket.current) {
+    //         socket.current.on('active-users', (active) => {           
+    //             const activeFriends = []
+
+    //             active.forEach(activeUsers => {
+    //                 const activeFrnd = contacts.filter(activeFr => {
+    //                     return activeFr._id === activeUsers.userID
+    //                 })
+    //                 if (activeFrnd.length > 0) {
+    //                     activeFrnd[0].active = true
+    //                     activeFriends.push(activeFrnd[0])
+    //                 }
+    //             })
+
+    //             console.log(activeFriends);
+    //             console.log('running')
+    //             // setActiveContacts(activeFriends)
+    //             // console.log(activeFriends)
+    //             // console.log(activeContacts);
+    //             // console.log('active friends: ', activeFriends);
+    //             // setContacts(activeFriends)
+    //         })
+
+    //         return () => {
+    //             socket.current.off('active-users')
+    //         }
+    //     }
+    // }, [socket, contacts])
 
     useEffect(() => {
         const filteredRes = []
@@ -77,6 +107,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
                                 <User
                                     key={index}
                                     user={user}
+                                    active={user.active ? true : false}
                                     selectedUser={user === selectedUser}
                                     onClick={() => handleSelect(user)}
                                 />
@@ -84,6 +115,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
                         })
                     :
                         contacts.map((user, index) => {
+                            // console.log('contacts array');
                             return (
                                 <User
                                     key={index}

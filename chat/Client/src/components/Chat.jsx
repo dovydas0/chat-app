@@ -22,40 +22,18 @@ const Chat = () => {
     }, [loggedUser])
     // console.log(activeContacts);
 
-    useEffect(() => {
-        if (socket.current) {
-            socket.current.on('active-users', (active) => {
-                // console.log(active);
-                // setActiveContacts(active)
-
-                
-                const activeFriends = []
-
-                active.forEach(activeUsers => {
-                    
-                    const activeFrnd = contacts.filter(activeFr => {
-                        return activeFr._id === activeUsers.userID
-                    })
-                    if (activeFrnd.length > 0) {
-                        activeFrnd[0].active = true
-                        activeFriends.push(activeFrnd[0])
-                    }
-                })
-
-                console.log(activeFriends);
-                console.log('running')
-                setActiveContacts(activeFriends)
-                // console.log(activeFriends)
-                // console.log(activeContacts);
-                // console.log('active friends: ', activeFriends);
-                // setContacts(activeFriends)
-            })
-
-            return () => {
-                socket.current.off('active-users')
-            }
-        }
-    }, [socket, contacts])
+    // useEffect(() => {
+    //     axios.post('http://localhost:8000/api/all-friends', {
+    //         loggedUser
+    //     })
+    //     .then(res => {
+    //         if (res.data.status) {
+    //             setContacts(res.data.friends[0].friends)
+    //             console.log('contacts: ', contacts);
+    //         }
+    //     })
+    //     .catch(err => console.log(err))
+    // }, [friendAddition, socket])
 
     useEffect(() => {
         axios.post('http://localhost:8000/api/all-friends', {
@@ -67,7 +45,67 @@ const Chat = () => {
             }
         })
         .catch(err => console.log(err))
-    }, [friendAddition, socket])
+    }, [loggedUser])
+
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on('active-users', (activeUsers) => {
+                // console.log(activeUsers);
+                const activeFriends = []
+                
+                contacts.forEach(contact => {
+                    const activeContact = activeUsers.find(activeUser => activeUser.userID === contact._id)
+                    
+                    if (activeContact) {
+                        activeFriends.push({...contact, active: true})
+                    } else {
+                        activeFriends.push({...contact, active: false})
+                    }
+                })
+                setActiveContacts(activeFriends)
+
+                console.log(activeFriends);
+
+                // console.log('running')
+                // setContacts(activeFriends)
+            })
+
+            return () => {
+                socket.current.off('active-users')
+            }
+        }
+    }, [socket, contacts])
+
+
+    // useEffect(() => {
+    //     if (socket.current) {
+    //         socket.current.on('active-users', (active) => {
+    //             console.log(active);
+    //             // const activeFriends = []
+
+    //             // active.forEach(activeUser => {
+    //             //     const activeFrnd = contacts.find(activeFr => {
+    //             //         return activeFr._id === activeUser.userID
+    //             //     })
+
+    //             //     if (activeFrnd != undefined) {
+    //             //         activeFrnd.active = true
+    //             //         activeFriends.push(activeFrnd)
+    //             //     }
+    //             // })
+
+    //             // console.log(activeFriends);
+    //             // setActiveContacts(activeFriends)
+
+    //             // console.log('running')
+    //             // setContacts(activeFriends)
+    //         })
+
+    //         return () => {
+    //             socket.current.off('active-users')
+    //         }
+    //     }
+    // }, [socket, contacts])
 
     // useEffect(() => {
     //     if (socket.current) {
@@ -151,15 +189,15 @@ const Chat = () => {
                     activeContacts.map((user, index) => {
                         return (
                             <div key={index}>
-                                {/* <p>{user.username}</p> */}
-                                <b>index</b>
+                                <p>{user.username}</p>
+                                <p>{user.active}</p>
                             </div>
                         )
                     })
                 }
             </div>
             <MenuBar />
-            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} contacts={contacts} handleSelect={handleSelect} />
+            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} contacts={contacts} handleSelect={handleSelect} socket={socket} />
             <Content profileOpened={profileOpened} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );
