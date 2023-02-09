@@ -219,7 +219,7 @@ const io = socket(server, {
       credentials: true,
     },
   });
-  
+
 io.on('connect', socket => {        
     socket.on('add-user', id => {
         socketUsers.push({socketID: socket.id, userID: id})
@@ -240,26 +240,3 @@ io.on('connect', socket => {
         }
     })
 })
-
-
- // socket.on('active-users', (data) => {
-    //     const receivingSocket = socketUsers.filter(user => user.userID === data.loggedUser._id)
-    //     const active = []
-        
-    //     socketUsers.forEach(user => {
-    //         const match = data.friends.filter(friend => {
-    //             return friend._id === user.userID
-    //         })
-    //         if (match.length > 0) {
-    //             match[0].active = true;
-    //             active.push(match[0])
-    //         }
-    //     })
-
-        
-    //     if (receivingSocket.length > 0) {
-    //         socket.to(receivingSocket[0].socketID).emit('active-friends', active)
-    //         console.log(active)
-    //     }
-
-    // })

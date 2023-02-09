@@ -113,7 +113,7 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
                             <p className='flex text-sm items-center'>{selected.username}</p>
                         </div>
                     </div>
-                    <div ref={chatEl} className='chtEl my-2 min-w-full overflow-y-scroll flex flex-col py-2 pr-3'>
+                    <div ref={chatEl} className='chtEl my-2 min-w-full overflow-y-auto flex flex-col py-2 pr-3'>
                         <ChatMessages chatData={chatData} loggedUser={loggedUser} />
                     </div>
                     <form onSubmit={e => handleSendMess(e)} id='message' className='flex h-max bg-gray-200 rounded-md items-center'>

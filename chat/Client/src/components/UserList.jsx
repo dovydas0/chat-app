@@ -67,7 +67,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
 
                 />
             </div>
-            <div ref={userSectionHtmlEl} onClick={e => handleDeselect(e)} className='-mx-3 overflow-y-scroll'>
+            <div ref={userSectionHtmlEl} onClick={e => handleDeselect(e)} className='-mx-3 overflow-y-auto'>
                 <div ref={userHtmlEl} className='flex flex-col m-3'>
                 {
                     searchText.length > 0

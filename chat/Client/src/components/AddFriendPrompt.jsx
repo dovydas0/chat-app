@@ -69,7 +69,7 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
             </div>
             <input value={friendEntry} onChange={e => setFriendEntry(e.target.value)} className='outline-none border-2 flex m-auto w-[95%] h-7 px-2 text-sm rounded-2xl' placeholder='Search' />
           </div>
-          <div className='mb-3.5 mt-3 h-[28rem] overflow-y-scroll'>
+          <div className='mb-3.5 mt-3 h-[28rem] overflow-y-auto'>
             {
               friendEntry.length > 0
               ?

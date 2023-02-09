@@ -33,7 +33,7 @@ const Chat = () => {
             }
         })
         .catch(err => console.log(err))
-    }, [loggedUser, contacts])
+    }, [loggedUser, activeContacts])
 
     // Storing active socket users
     useEffect(() => {
