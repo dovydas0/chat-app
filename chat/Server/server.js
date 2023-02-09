@@ -219,17 +219,17 @@ const io = socket(server, {
       credentials: true,
     },
   });
-
-io.on('connection', socket => {        
+  
+io.on('connect', socket => {        
     socket.on('add-user', id => {
         socketUsers.push({socketID: socket.id, userID: id})
-        io.sockets.emit('active-users', socketUsers)
+        io.emit('active-users', socketUsers)
     })
 
     
     socket.on('disconnect', () => {
         socketUsers = socketUsers.filter(user => user.socketID !== socket.id)
-        io.sockets.emit('active-users', socketUsers)
+        io.emit('active-users', socketUsers)
     })
 
     socket.on('send-msg', (data) => {

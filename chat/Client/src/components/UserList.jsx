@@ -5,12 +5,12 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
 
-const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect, socket }) => {
+const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchRes, setSearchRes ] = useState(['hi'])
+    
     const selectedUser = useSelector(state => state.selected.selectedUser)
     const loggedUser = useSelector(state => state.auth.user)
-
     const inputRef = useRef()
     const userHtmlEl = useRef()
     const userSectionHtmlEl = useRef()
@@ -21,42 +21,12 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect, s
                 setSearchText('')
             }
         }
-        
         document.addEventListener('click', handleInputClick)
+
         return () => {
             document.removeEventListener('click', handleInputClick)
         }
     })
-
-    // useEffect(() => {
-    //     if (socket.current) {
-    //         socket.current.on('active-users', (active) => {           
-    //             const activeFriends = []
-
-    //             active.forEach(activeUsers => {
-    //                 const activeFrnd = contacts.filter(activeFr => {
-    //                     return activeFr._id === activeUsers.userID
-    //                 })
-    //                 if (activeFrnd.length > 0) {
-    //                     activeFrnd[0].active = true
-    //                     activeFriends.push(activeFrnd[0])
-    //                 }
-    //             })
-
-    //             console.log(activeFriends);
-    //             console.log('running')
-    //             // setActiveContacts(activeFriends)
-    //             // console.log(activeFriends)
-    //             // console.log(activeContacts);
-    //             // console.log('active friends: ', activeFriends);
-    //             // setContacts(activeFriends)
-    //         })
-
-    //         return () => {
-    //             socket.current.off('active-users')
-    //         }
-    //     }
-    // }, [socket, contacts])
 
     useEffect(() => {
         const filteredRes = []
@@ -107,7 +77,6 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect, s
                                 <User
                                     key={index}
                                     user={user}
-                                    active={user.active ? true : false}
                                     selectedUser={user === selectedUser}
                                     onClick={() => handleSelect(user)}
                                 />
@@ -120,7 +89,6 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect, s
                                 <User
                                     key={index}
                                     user={user}
-                                    active={user.active ? true : false}
                                     selectedUser={user === selectedUser}
                                     onClick={() => handleSelect(user)}
                                 />
