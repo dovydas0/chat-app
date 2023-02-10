@@ -15,7 +15,7 @@ Users who have added their friends can start chating with each other in real-tim
 
 Technologies used for this project:
 
-HTML/CSS/Tailwindcss, ReactJS, Redux, NodeJS/Express, Socket.io, MongoDB/Mongoose
+HTML/CSS/Tailwind CSS, JavaScript, ReactJS, Redux, NodeJS/Express, Socket.io, MongoDB/Mongoose
 
 ## Screenshots
 

@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react'
 import { MdClose } from 'react-icons/md'
 import axios from 'axios'
 
-const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser }) => {
+const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser, socket }) => {
   const [ friendEntry, setFriendEntry ] = useState('')
   const [ noUsers, setNoUsers ] = useState(false)
   const [ allUsers, setAllUsers ] = useState([])
@@ -37,6 +37,7 @@ const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser }) 
         loggedUser
       })
       setFriendAddition(prev => !prev)
+      socket.emit('add-friend-request', friend)
             
       if (result.data.status === false) {
         console.log(result.data.status);

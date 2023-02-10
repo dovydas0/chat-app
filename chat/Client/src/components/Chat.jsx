@@ -30,7 +30,6 @@ const Chat = () => {
         .then(res => {
             if (res.data.status) {
                 setFetchedContacts(res.data.friends[0].friends)  
-                console.log('fetching friends');
             }
         })
         .catch(err => console.log(err))
@@ -38,17 +37,22 @@ const Chat = () => {
 
     // Storing active socket users
     useEffect(() => {
-        socket.on('active-users', (activeUsers) => setActiveContacts(activeUsers))
+        socket.on('active-users', (activeUsers) => {
+            setActiveContacts(activeUsers)
+        })
+        socket.on('add-friend-response', () => {
+            setFriendAddition(prev => !prev)
+        })
 
         return () => {
             socket.off('active-users')
+            socket.off('add-friend-response')
         }
     }, [socket, contacts])
 
     // Indicating active socket users on contacts
     useEffect(() => {
         const activeFriends = []
-        console.log('active users');            
         fetchedContacts.forEach(contact => {
             const activeContact = activeContacts.find(activeUser => activeUser.userID === contact._id)
             
@@ -73,7 +77,7 @@ const Chat = () => {
     }
 
     return(
-        <div className="flex m-auto w-3/4 h-3/4 bg-gray-100 rounded-2xl">
+        <div className="flex m-auto w-3/4 max-w-screen-md h-3/4 bg-gray-100 rounded-2xl">
             <div>
                 {
                     activeContacts.map((user, index) => {
@@ -87,7 +91,7 @@ const Chat = () => {
                 }
             </div>
             <MenuBar />
-            <UserList setFriendAddition={setFriendAddition} contacts={contacts} setContacts={setContacts} handleSelect={handleSelect} />
+            <UserList setFriendAddition={setFriendAddition} contacts={contacts} setContacts={setContacts} handleSelect={handleSelect} socket={socket} />
             <Content profileOpened={profileOpened} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );

@@ -5,7 +5,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
 
-const UserList = ({ setFriendAddition, contacts, setContacts, handleSelect }) => {
+const UserList = ({ setFriendAddition, contacts, handleSelect, socket }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchRes, setSearchRes ] = useState(['hi'])
     const [ friendPrompt, setFriendPrompt ] = useState(false)
@@ -68,8 +68,8 @@ const UserList = ({ setFriendAddition, contacts, setContacts, handleSelect }) =>
 
                 />
             </div>
-            <div ref={userSectionHtmlEl} onClick={e => handleDeselect(e)} className='-mx-3 overflow-y-auto'>
-                <div ref={userHtmlEl} className='flex flex-col m-3'>
+            <div ref={userSectionHtmlEl} onClick={e => handleDeselect(e)} className='-mx-3 mt-2 overflow-y-auto'>
+                <div ref={userHtmlEl} className='flex flex-col mx-3'>
                 {
                     searchText.length > 0
                     ?
@@ -106,7 +106,7 @@ const UserList = ({ setFriendAddition, contacts, setContacts, handleSelect }) =>
             </div>
             <button onClick={handleFriendPrompt} className='bg-indigo-500 px-5 py-1 text-sm text-white rounded-lg m-auto hover:shadow-lg'>Add friends</button>
             {
-                friendPrompt ? <AddFriendPrompt setFriendAddition={setFriendAddition} handleFriendPrompt={handleFriendPrompt} loggedUser={loggedUser} /> : ''
+                friendPrompt ? <AddFriendPrompt setFriendAddition={setFriendAddition} handleFriendPrompt={handleFriendPrompt} loggedUser={loggedUser} socket={socket} /> : ''
             }
         </div>
     )

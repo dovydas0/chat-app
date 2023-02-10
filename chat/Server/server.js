@@ -232,11 +232,19 @@ io.on('connect', socket => {
         io.emit('active-users', socketUsers)
     })
 
+    socket.on('add-friend-request', friend => {
+        const receivingSocket = socketUsers.find(user => user.userID === friend._id)
+
+        if (receivingSocket) {
+            socket.to(receivingSocket.socketID).emit('add-friend-response')
+        }
+    })
+
     socket.on('send-msg', (data) => {
-        const receivingSocket = socketUsers.filter(user => user.userID === data.receiverID)
+        const receivingSocket = socketUsers.find(user => user.userID === data.receiverID)
         
-        if (receivingSocket.length > 0) {
-            socket.to(receivingSocket[0].socketID).emit('receive-msg', data)
+        if (receivingSocket) {
+            socket.to(receivingSocket.socketID).emit('receive-msg', data)
         }
     })
 })
