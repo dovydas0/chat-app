@@ -16,7 +16,7 @@ const ChatMessages = ({ chatData, loggedUser }) => {
                             <div key={index}>
                                 <p className={`flex mx-3 -mb-1 text-xs text-zinc-400 ${loggedSender ? 'justify-end' : 'justify-start'}`}>{loggedSender ? "You" : selected.username}</p>
                                 <div className={`flex ${loggedSender ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`w-72 max-w-[50%] pl-2 py-1 my-1 mx-2 rounded-lg wrapping-mess ${loggedSender ? 'bg-gray-200' : 'bg-indigo-200'}`}>
+                                    <div className={`w-72 max-w-[50%] px-2 py-1 my-1 mx-2 rounded-lg wrapping-mess ${loggedSender ? 'bg-gray-200' : 'bg-indigo-200'}`}>
                                         <p>{message.message}</p>
                                     </div>
                                 </div>

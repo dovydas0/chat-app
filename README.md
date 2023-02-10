@@ -5,8 +5,8 @@ This chat application has account support which means that users are authenticat
 When inside the app users can add other users who can be found in the application.
 Users who have added their friends can start chating with each other in real-time with the help of sockets.
 
-- Authentication step ensures that the user is registered and stored in the database.
-- Users' credentials stored in the database are encrypted to prevent any potential credential leaks even if the database was breached.
+- Authentication step ensures that the user is registered and stored in the database
+- Users' credentials stored in the database are encrypted to prevent any potential credential leaks even if the database was breached
 - Saved chat history
 - Users can use custom profile images
 - Active/Inactive user indication
@@ -26,3 +26,7 @@ Login window
 Signup window
 
 ![signup](./screenshots/Signup.png)
+
+Chat window
+
+![chat window](./screenshots/chat_design.png)
