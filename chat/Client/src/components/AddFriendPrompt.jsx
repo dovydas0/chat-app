@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react'
 import { MdClose } from 'react-icons/md'
 import axios from 'axios'
 
-const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
+const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser }) => {
   const [ friendEntry, setFriendEntry ] = useState('')
   const [ noUsers, setNoUsers ] = useState(false)
   const [ allUsers, setAllUsers ] = useState([])
@@ -31,12 +31,13 @@ const AddFriendPrompt = ({ handleFriendPrompt, loggedUser }) => {
     handleFriendPrompt()
 
     if (friend) {
+      // contact added to the database
       const result = await axios.post('http://localhost:8000/api/add-friend', {
         friend,
         loggedUser
       })
-
-      
+      setFriendAddition(prev => !prev)
+            
       if (result.data.status === false) {
         console.log(result.data.status);
       }

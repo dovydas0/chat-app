@@ -5,9 +5,10 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import AddFriendPrompt from './AddFriendPrompt'
 import User from './User'
 
-const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect }) => {
+const UserList = ({ setFriendAddition, contacts, setContacts, handleSelect }) => {
     const [ searchText, setSearchText ] = useState('');
     const [ searchRes, setSearchRes ] = useState(['hi'])
+    const [ friendPrompt, setFriendPrompt ] = useState(false)
     
     const selectedUser = useSelector(state => state.selected.selectedUser)
     const loggedUser = useSelector(state => state.auth.user)
@@ -41,7 +42,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
     }, [searchText, contacts])
 
     const handleFriendPrompt = () => {
-        setFriendAddition(prev => !prev)
+        setFriendPrompt(prev => !prev)
     }
 
     const handleDeselect = (e) => {
@@ -84,7 +85,6 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
                         })
                     :
                         contacts.map((user, index) => {
-                            // console.log('contacts array');
                             return (
                                 <User
                                     key={index}
@@ -106,7 +106,7 @@ const UserList = ({ friendAddition, setFriendAddition, contacts, handleSelect })
             </div>
             <button onClick={handleFriendPrompt} className='bg-indigo-500 px-5 py-1 text-sm text-white rounded-lg m-auto hover:shadow-lg'>Add friends</button>
             {
-                friendAddition ? <AddFriendPrompt handleFriendPrompt={handleFriendPrompt} loggedUser={loggedUser} /> : ''
+                friendPrompt ? <AddFriendPrompt setFriendAddition={setFriendAddition} handleFriendPrompt={handleFriendPrompt} loggedUser={loggedUser} /> : ''
             }
         </div>
     )

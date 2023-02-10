@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useRef } from 'react'
+import { React, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deselectUser, selectUser } from '../store/selectedUserSlice'
 import axios from 'axios'
@@ -9,9 +9,9 @@ import Content from './Content'
 
 const socket = io('http://localhost:8000')
 const Chat = () => {
-    const [ contactsUnfiltered, setContactsUnfiltered ] = useState([])
-    const [ contacts, setContacts ] = useState([])
+    const [ fetchedContacts, setFetchedContacts ] = useState([])
     const [ activeContacts, setActiveContacts ] = useState([])
+    const [ contacts, setContacts ] = useState([])
     const [ friendAddition, setFriendAddition ] = useState(false)
     const [ profileOpened, setProfileOpened ] = useState(false)
     const loggedUser = useSelector(state => state.auth.user)
@@ -29,11 +29,12 @@ const Chat = () => {
         })
         .then(res => {
             if (res.data.status) {
-                setContactsUnfiltered(res.data.friends[0].friends)    
+                setFetchedContacts(res.data.friends[0].friends)  
+                console.log('fetching friends');
             }
         })
         .catch(err => console.log(err))
-    }, [loggedUser, activeContacts])
+    }, [loggedUser, friendAddition])
 
     // Storing active socket users
     useEffect(() => {
@@ -47,9 +48,8 @@ const Chat = () => {
     // Indicating active socket users on contacts
     useEffect(() => {
         const activeFriends = []
-        // setContacts([])
-            
-        contactsUnfiltered.forEach(contact => {
+        console.log('active users');            
+        fetchedContacts.forEach(contact => {
             const activeContact = activeContacts.find(activeUser => activeUser.userID === contact._id)
             
             if (activeContact) {
@@ -58,11 +58,9 @@ const Chat = () => {
                 activeFriends.push({...contact, active: false})
             }
         })
-
         setContacts(activeFriends)
-        // console.log('contacts: ', contacts);
 
-    }, [activeContacts, contactsUnfiltered])
+    }, [activeContacts, fetchedContacts])
 
     const handleProfileOpening = () => {
         setProfileOpened(true)
@@ -89,7 +87,7 @@ const Chat = () => {
                 }
             </div>
             <MenuBar />
-            <UserList friendAddition={friendAddition} setFriendAddition={setFriendAddition} contacts={contacts} handleSelect={handleSelect} />
+            <UserList setFriendAddition={setFriendAddition} contacts={contacts} setContacts={setContacts} handleSelect={handleSelect} />
             <Content profileOpened={profileOpened} handleProfileOpening={handleProfileOpening} socket={socket} />
         </div>
     );
