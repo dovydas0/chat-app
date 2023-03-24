@@ -19,15 +19,17 @@ HTML/CSS/Tailwind CSS, JavaScript, ReactJS, Redux, NodeJS/Express, Socket.io, Mo
 
 # Install
 
-Run the client React app:
+Install the required dependencies and run the client React app:
 ```
 cd chat/Client
+npm install
 npm start
 ```
 
-Run the Server NodeJS app:
+Install the required dependencies and run the Server NodeJS app:
 ```
 cd chat/Server
+npm install
 npm start
 ```
 
