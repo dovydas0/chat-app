@@ -22,13 +22,13 @@ HTML/CSS/Tailwind CSS, JavaScript, ReactJS, Redux, NodeJS/Express, Socket.io, Mo
 Run the client React app:
 ```
 cd chat/Client
-npm run
+npm start
 ```
 
 Run the Server NodeJS app:
 ```
 cd chat/Server
-npm run
+npm start
 ```
 
 When server and client applications are ran, open client application in your localhost.
