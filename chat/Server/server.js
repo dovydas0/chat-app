@@ -11,7 +11,7 @@ const Messages = require('./models/MessagesModel')
 require('dotenv').config()
 
 mongoose.set('strictQuery', false)
-const PORT = 8000
+const PORT = process.env.PORT || 8000
 let socketUsers = []
 
 // Middleware
