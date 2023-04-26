@@ -17,6 +17,24 @@ Technologies used for this project:
 
 HTML/CSS/Tailwind CSS, JavaScript, ReactJS, Redux, NodeJS/Express, Socket.io, MongoDB/Mongoose
 
+# Install
+
+Install the required dependencies and run the client React app:
+```
+cd chat/Client
+npm install
+npm start
+```
+
+Install the required dependencies and run the Server NodeJS app:
+```
+cd chat/Server
+npm install
+npm start
+```
+
+When server and client applications are ran, open client application in your localhost.
+
 ## Screenshots
 
 Login window
