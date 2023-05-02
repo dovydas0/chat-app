@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import Signup from './Signup'
-
+import { SERVER_URL } from '../varHelper';
 
 const Login = () => {
     const [ signup, setSignup ] = useState(false)
@@ -14,11 +14,13 @@ const Login = () => {
     const [ loading, setLoading ] = useState(false)
     const dispatch = useDispatch()
 
+    console.log("Client opened");
+
     const handleLoginSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
         
-        axios.post('http://localhost:8000/api/login', {
+        axios.post(`${SERVER_URL}/api/login`, {
             username,
             password
         })

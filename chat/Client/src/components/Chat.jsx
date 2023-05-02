@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useCallback } from 'react'
+import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deselectUser, selectUser } from '../store/selectedUserSlice'
 import axios from 'axios'
@@ -6,8 +6,10 @@ import io from 'socket.io-client'
 import MenuBar from './MenuBar'
 import UserList from './UserList'
 import Content from './Content'
+import { SERVER_URL } from '../varHelper';
 
-const socket = io('http://localhost:8000')
+
+const socket = io(`${SERVER_URL}`)
 const Chat = () => {
     const [ fetchedContacts, setFetchedContacts ] = useState([])
     const [ activeContacts, setActiveContacts ] = useState([])
@@ -24,7 +26,7 @@ const Chat = () => {
 
     // Fetching friends from the database
     useEffect(() => {
-        axios.post('http://localhost:8000/api/all-friends', {
+        axios.post(`${SERVER_URL}/api/all-friends`, {
             loggedUser
         })
         .then(res => {

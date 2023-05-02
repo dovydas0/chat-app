@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { IoMdSend } from 'react-icons/io'
 import ChatMessages from './ChatMessages'
 import axios from 'axios'
+import { SERVER_URL } from '../varHelper';
 
 const ChatContent = ({ handleProfileOpening, socket }) => {
     const [ receivedMess, setReceivedMess ] = useState('')
@@ -13,7 +14,7 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
     const loggedUser = useSelector(state => state.auth.user)
     
     const getChatData = async () => {
-        const data = await axios.post('http://localhost:8000/api/get-chat', {
+        const data = await axios.post(`${SERVER_URL}/api/get-chat`, {
             senderID: loggedUser._id,
             receiverID: selected._id
         })
@@ -75,7 +76,7 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
         setChatData(chat)
         
         try {
-            const res = await axios.post('http://localhost:8000/api/send-mess', {
+            const res = await axios.post(`${SERVER_URL}/api/send-mess`, {
                 message,
                 senderID: loggedUser._id,
                 receiverID: selected._id
@@ -100,7 +101,7 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
                     ''
             }
             <div className='rounded-2xl shadow-sm hover:shadow-none shadow-zinc-400 mb-2'>
-                <img onClick={handleProfileOpening} className='w-7 h-7 object-cover cursor-pointer rounded-full' src={loggedUser ? `http://localhost:8000/profile-images/${loggedUser.avatar_img}` : ''} />
+                <img onClick={handleProfileOpening} className='w-7 h-7 object-cover cursor-pointer rounded-full' src={loggedUser ? `${SERVER_URL}/profile-images/${loggedUser.avatar_img}` : ''} />
             </div>
         </div>
         {
@@ -108,7 +109,7 @@ const ChatContent = ({ handleProfileOpening, socket }) => {
             ?
                 <div className='grid-temp bg-white overflow-hidden rounded-2xl h-full shadow-md p-4'>
                     <div className='flex pb-2 border-b border-zinc-300'>
-                        <img className='w-8 h-8 object-cover rounded-full' src={`http://localhost:8000/profile-images/${selected.avatar_img}`} />
+                        <img className='w-8 h-8 object-cover rounded-full' src={`${SERVER_URL}/profile-images/${selected.avatar_img}`} />
                         <div className='flex pl-1.5'>
                             <p className='flex text-sm items-center'>{selected.username}</p>
                         </div>

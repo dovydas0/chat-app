@@ -1,7 +1,7 @@
 import { React, useState } from 'react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
-
+import { SERVER_URL } from '../varHelper';
 
 const Signup = ({ handleLogSignSwitch }) => {
     const [ username, setUsername ] = useState('')
@@ -21,7 +21,7 @@ const Signup = ({ handleLogSignSwitch }) => {
             return
         }
         
-        axios.post('http://localhost:8000/api/add-user', {
+        axios.post(`${SERVER_URL}/api/add-user`, {
             username: username,
             password: password
         })

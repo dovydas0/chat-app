@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import { MdClose } from 'react-icons/md'
 import axios from 'axios'
+import { SERVER_URL } from '../varHelper';
 
 const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser, socket }) => {
   const [ friendEntry, setFriendEntry ] = useState('')
@@ -32,7 +33,7 @@ const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser, so
 
     if (friend) {
       // contact added to the database
-      const result = await axios.post('http://localhost:8000/api/add-friend', {
+      const result = await axios.post(`${SERVER_URL}/api/add-friend`, {
         friend,
         loggedUser
       })
@@ -47,7 +48,7 @@ const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser, so
 
   useEffect(() => {
     const getUsers = async () => {
-      const allUsers = await axios.get('http://localhost:8000/api/all-users')
+      const allUsers = await axios.get(`${SERVER_URL}/api/all-users`)
       const users = allUsers.data.users.filter(user => user._id !== loggedUser._id)
       if (users.length < 1)
       {
@@ -79,7 +80,7 @@ const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser, so
                   return (
                     <div key={index} className='border-b border-zinc-400 last:border-none'>
                       <div onClick={() => addFriend(user)} className='flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400 hover:cursor-pointer'>
-                        <img src={`http://localhost:8000/profile-images/${user.avatar_img}`} className='w-9 h-9 object-cover rounded-full mr-2' />
+                        <img src={`${SERVER_URL}/profile-images/${user.avatar_img}`} className='w-9 h-9 object-cover rounded-full mr-2' />
                         <p>{user.username}</p>
                       </div>
                     </div>
@@ -90,7 +91,7 @@ const AddFriendPrompt = ({ setFriendAddition, handleFriendPrompt, loggedUser, so
                   return (
                     <div key={index} className='smooth border-b border-zinc-400 last:border-none'>
                       <div onClick={() => addFriend(user)} className='smooth flex justify-start items-center h-12 pl-2 select-none bg-zinc-100 hover:pl-2 hover:border-l-[6px] border-indigo-400 hover:cursor-pointer'>
-                        <img src={`http://localhost:8000/profile-images/${user.avatar_img}`} className='w-9 h-9 object-cover rounded-full mr-2' />
+                        <img src={`${SERVER_URL}/profile-images/${user.avatar_img}`} className='w-9 h-9 object-cover rounded-full mr-2' />
                         <p>{user.username}</p>
                       </div>
                     </div>
