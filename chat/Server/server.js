@@ -215,7 +215,7 @@ const server = app.listen(PORT, () => {
 // Sockets
 const io = socket(server, {
     cors: {
-      origin: "https://hilarious-cocada-aa1138.netlify.app/",
+      origin: "*",
       credentials: true,
     },
   });
