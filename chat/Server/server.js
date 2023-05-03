@@ -215,7 +215,7 @@ const server = app.listen(PORT, () => {
 // Sockets
 const io = socket(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: "https://hilarious-cocada-aa1138.netlify.app/?fbclid=IwAR1a4mCrWGrySb1zE9OImux5M9CFMfcWgcpXfbEyLMT5P54yA_gHuAql8VQ",
       credentials: true,
     },
   });
