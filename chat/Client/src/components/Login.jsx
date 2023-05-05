@@ -14,8 +14,6 @@ const Login = () => {
     const [ loading, setLoading ] = useState(false)
     const dispatch = useDispatch()
 
-    console.log("Client opened");
-
     const handleLoginSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
